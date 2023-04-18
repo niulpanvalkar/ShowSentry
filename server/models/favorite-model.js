@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
 
 // const mongoose = require("mongoose");
-const {
-    ObjectId
-} = mongoose.Schema;
-const favoriteSchema = mongoose.Schema({
+
+const favoriteSchema = new mongoose.Schema({
     user: {
         type: ObjectId,
         ref: "User",
@@ -30,4 +28,5 @@ const favoriteSchema = mongoose.Schema({
 })
 
 // mongoose exports a model method
-module.exports = mongoose.model("Favorite", favoriteSchema);
+const favoriteModel = mongoose.model("Favorite", favoriteSchema);
+export default favoriteModel;
