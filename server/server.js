@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import userRoutes from "./routes/user.js";
+import routes from "./src/routes/index.js";
 import mongoose from "mongoose";
 
 
@@ -9,7 +9,6 @@ dotenv.config();
 const port = process.env.PORT || 9000;
 const app = express();
 
-
 mongoose.connect(process.env.DATABASE);
 
 mongoose.connection.on("connected", () => {
@@ -17,6 +16,9 @@ mongoose.connection.on("connected", () => {
 })
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+app.use("/api/v1", routes);
 
 app.get('/', (req, res) => {
     res.send(`Server is up and running`)
@@ -26,7 +28,7 @@ app.listen(port, () => {
     console.log(`Server started on port ${port}` );
 });
 
-app.use("/user", userRoutes);
+
 
 
 

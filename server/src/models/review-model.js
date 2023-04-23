@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
     user: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
@@ -10,7 +10,7 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    mediaType: {
+    mediaType: {    
         type: String,
         enum: ['tv', 'movie'],
         required: true
@@ -25,5 +25,5 @@ const reviewSchema = new mongoose.Schema({
     }
 });
 
-const reviewModel = mongoose.Schema("Review", reviewModel)
+const reviewModel = mongoose.model("Review", reviewSchema)
 export default reviewModel;
