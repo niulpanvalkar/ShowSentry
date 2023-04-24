@@ -16,3 +16,24 @@ export const create = async(request, response) => {
         responseHelper.setResponse(response, result.errorCode, error);
     } 
 }
+
+export const signin = async(request, response) => {
+    try {
+        const result = await userService.userSignin(request.body);
+        if(result.success) {
+            responseHelper.setResponse(response, 200, result);
+        } else {
+            responseHelper.setResponse(response, result.errorCode, result);
+        }
+    }catch(error) {
+        responseHelper.setResponse(response, 500, error);
+    }
+}
+
+export const getInfo = async(request, response) => {
+    try {
+        
+    } catch(error) {
+        responseHelper.setResponse(response, 500, error);
+    }
+}
