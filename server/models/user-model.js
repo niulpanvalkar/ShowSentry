@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const {Schema} = mongoose;
+// const {Schema} = mongoose;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
     username : {
         type: String,
         required: true,
@@ -24,9 +24,9 @@ const userSchema = new Schema({
     }
 })
 
-userSchema.methods.setPassword = async (password) => {
+userSchema.methods.setPassword = function (passwordInput)  {
     const salt = 10;
-    this.password = await bcrypt.hash(password, salt);
+    this.password = bcrypt.hashSync(passwordInput, salt);
 }
 
 
