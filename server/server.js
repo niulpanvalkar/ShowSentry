@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import routes from "../server/routes/index.js";
+import routes from "./routes/index.js";
 import mongoose from "mongoose";
 
 
@@ -17,8 +17,6 @@ mongoose.connection.on("connected", () => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-app.use("/api/v1", routes);
 
 app.get('/', (req, res) => {
     res.send(`Server is up and running`)
@@ -27,3 +25,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server started on port ${port}` );
 });
+
+app.use("/api/v1", routes);
