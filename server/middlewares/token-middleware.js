@@ -1,6 +1,6 @@
-import jwt from "jwt";
-import responseHelper from "../utils/response-helper";
-import userModel from "../models/user-model";
+import jwt from "jsonwebtoken";
+import responseHelper from "../utils/response-helper.js";
+import userModel from "../models/user-model.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,9 +8,10 @@ dotenv.config();
 const decodeToken = async (request) => {
     try {
         const bearerHeader = request.headers["authorization"];
+        console.log("bearerHeader : ", bearerHeader);
         if(bearerHeader) {
             const token = bearerHeader.split(" ")[1];
-            return jwt.verify(token, proces.env.TOKEN_SECRET);
+            return jwt.verify(token, process.env.TOKEN_SECRET);
         }
         return false
     }catch(error){
@@ -25,8 +26,9 @@ const auth = async(request, response, next) => {
     if(!decodedToken) {
         responseHelper.setResponse(response, 401, {success: false, message: "User unauthorized"});      
     }  
-    
-    const user = userModel.findById(decodedToken.data);
+
+    const user = await userModel.findById(decodedToken.data);
+    console.log("USER IN MIDDLEWARE : ", user);
     if(!user) {
         responseHelper.setResponse(response, 401, {success: false, message: "User unauthorized"});
     }

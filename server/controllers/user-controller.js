@@ -1,4 +1,3 @@
-// import { response } from "express";
 import * as userService from "../services/user-service.js";
 import responseHelper from "../utils/response-helper.js";
 
@@ -32,7 +31,13 @@ export const signin = async(request, response) => {
 
 export const getInfo = async(request, response) => {
     try {
-        
+        console.log("User : ", request.user);
+        const result = await userService.getInfo(request.user._id);
+        if(result.success) {
+            responseHelper.setResponse(response, 200, result);
+        } else {
+            responseHelper.setResponse(response, result.errorCode, result);
+        }
     } catch(error) {
         responseHelper.setResponse(response, 500, error);
     }

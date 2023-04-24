@@ -68,3 +68,22 @@ export const userSignin = async(params) => {
     return {success: false, message: "User does not exist", errorCode : 401};
   }
 }
+
+export const getInfo = async (userId) => {
+  try {
+    console.log("user  ID ", userId);
+    const user = await userModel
+      .findById(userId)
+      .select("username displayName id email");
+    if (!user) {
+      return {
+        success: false,
+        message: "user details not found",
+        errorCode: 500,
+      };
+    }
+    return { success: true, message: "User found successfully", data: user };
+  } catch (error) {
+    return { success: false, errorCode: 500 };
+  }
+};
