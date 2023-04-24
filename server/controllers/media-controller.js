@@ -7,13 +7,13 @@ import * as mediaService from "../services/media-service.js";
 
 export const fetchMediaList = async(request, response) => {
     try{
-        const page = req.query;
-        const mediaType = req.params['mediaType'];
-        const mediaCategory = req.params['mediaCategory'];
-        const data = await mediaService.fetchMediaList(page,mediaCategory,mediaType);
+        const page = request.query["page"];
+        const mediaType = request.params['mediaType'];
+        const mediaCategory = request.params['mediaCategory'];
+        const data = await mediaService.fetchMediaList({page,mediaCategory,mediaType});
         return response.status(200).send(data);
     } catch(error) {
         console.error('Failed to fetch mediaList');
-        return response.status(500).send(data);
+        return response.status(500).send(error);
     }
 }

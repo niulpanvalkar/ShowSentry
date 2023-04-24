@@ -29,4 +29,4 @@ const favoriteSchema = new mongoose.Schema({
 
 // mongoose exports a model method
 const favoriteModel = mongoose.model("Favorite", favoriteSchema);
-export default favoriteModel;
+export default favoriteModel;   

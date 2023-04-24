@@ -1,9 +1,9 @@
 import express from "express";
 
-import mediaRoute from "./media-routes.js";
+import mediaRoutes from "./media-routes.js";
 
 const router = express.Router();
 
-router.use("/:mediatype",mediaRoute);
+router.use("/:mediaType",mediaRoutes);
 
 export default router;

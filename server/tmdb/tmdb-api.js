@@ -1,4 +1,4 @@
-import axiosClient from "../axios/axios-client.js";
+import * as axiosClient from "../axios/axios-client.js";
 import tmdbEndpoints from "./tmdb-endpoints.js";
 
 const tmdbApi = {
@@ -18,9 +18,9 @@ const tmdbApi = {
     ),
     personalDetail: async (personId) => await axiosClient.get(
         tmdbEndpoints.personalDetail({
-        personId
-    })
+            personId
+        })
     ),
 };
 
-export default tmdbApi
+export default tmdbApi;

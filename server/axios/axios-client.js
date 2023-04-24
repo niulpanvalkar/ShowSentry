@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const get = async(url) => {
+export const get = async(url) => {
+    console.log("URL : ", url);
     const response = await axios.get(url)
     return response.data
 };
 
-export default get;
+// export default get;
