@@ -1,9 +1,5 @@
 import responseHelper from "../utils/response-helper.js";
-import tmdbApi from "../tmdb/tmdb-api.js";
-import reviewModel from "../models/review-model.js";
-
 import * as mediaService from "../services/media-service.js";
-import { response } from "express";
 
 
 export const fetchMediaList = async(request, response) => {
