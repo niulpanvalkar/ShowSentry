@@ -3,6 +3,7 @@ import tmdbApi from "../tmdb/tmdb-api.js";
 import reviewModel from "../models/review-model.js";
 
 import * as mediaService from "../services/media-service.js";
+import { response } from "express";
 
 
 export const fetchMediaList = async(request, response) => {
@@ -11,9 +12,51 @@ export const fetchMediaList = async(request, response) => {
         const mediaType = request.params['mediaType'];
         const mediaCategory = request.params['mediaCategory'];
         const data = await mediaService.fetchMediaList({page,mediaCategory,mediaType});
-        return response.status(200).send(data);
+        if (data.success){
+            responseHelper.setResponse(response,200,data)
+        } else {
+            responseHelper.setResponse(response, 500,data)
+        }
+        // return response.status(200).send(data);
     } catch(error) {
-        console.error('Failed to fetch mediaList');
-        return response.status(500).send(error);
+        console.log("medai-controller : fetchList :: ERROR ", error.message)
+        responseHelper.setResponse(response, 500, error);
     }
 }
+
+
+export const getGenres = async(request, response) => {
+    try {
+        const mediaType = request.params;
+        
+        const result = await mediaService.getGenres({mediaType});
+        console.log("Result" , result);
+        if (result.success){
+            responseHelper.setResponse(response,200,result)
+        } else {
+            responseHelper.setResponse(response, 500,result)
+        }
+    } catch (error) {
+        console.log("media-controller : fetchGenres :: ERROR ", error.message)
+        responseHelper.setResponse(response, 500, error);
+    }
+}
+
+export const search = async(request,response)=> {
+    try{
+        const mediaType = request.params['mediaType'];
+        const query = request.query["query"];
+        const page = request.query["page"];
+        console.log("Request in search ",query, page, mediaType);
+        const result = await mediaService.mediaSearch({query,page,mediaType});
+        if (result.success){
+            responseHelper.setResponse(response,200,result)
+        } else {
+            responseHelper.setResponse(response, 500,result)
+        }
+    } catch (error){
+        console.log("media-controller : search :: ERROR ", error.message)
+        responseHelper.setResponse(response, 500, error);
+    }
+}
+
