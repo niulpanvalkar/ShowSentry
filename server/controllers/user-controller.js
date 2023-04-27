@@ -42,3 +42,16 @@ export const getInfo = async(request, response) => {
         responseHelper.setResponse(response, 500, error);
     }
 }
+
+export const updatePassword = async(request, response) => {
+    try{
+        const result = await userService.updatePassword(request.body, request.user.id);
+        if(result.success) {
+            responseHelper.setResponse(response, 200, result);
+        } else {
+            responseHelper.setResponse(response, result.errorCode, result);
+        }
+    } catch(error) {
+        responseHelper.setResponse(response, 500, error);
+    }
+}

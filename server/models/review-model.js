@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import modelOptions from "./options.js";
 
 const reviewSchema = new mongoose.Schema({
     user: {
@@ -23,7 +24,7 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, modelOptions);
 
 const reviewModel = mongoose.model("Review", reviewSchema)
 export default reviewModel;
