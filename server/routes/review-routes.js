@@ -9,12 +9,17 @@ const router = express.Router({
     mergeParams: true
 });
 
-// router.get("/",
-//     tokenMiddleware.auth,
-//     reviewController.getReviewsOfUser);
 
 router.post("/",
-    tokenMiddleware.auth, 
-    reviewValidator.validateUserReview, 
+    tokenMiddleware.auth,
+    reviewValidator.validateUserReview,
     reviewController.createReview);
+
+router.get("/", tokenMiddleware.auth, reviewController.getUserReview);
+
+router.delete("/:reviewId",
+    tokenMiddleware.auth,
+    reviewController.removeReview);
+
+
 export default router;
