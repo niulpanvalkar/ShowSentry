@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import modelOptions from "./options.js";
 
 const userSchema = new mongoose.Schema({
     username : {
@@ -20,7 +21,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique : true
     }
-})
+}, modelOptions);
 
 userSchema.methods.setPassword = function (passwordInput)  {
     const salt = 10;

@@ -1,7 +1,6 @@
 import User from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import userModel from "../models/user-model.js";
 import bcrypt from "bcrypt";
 
 dotenv.config();
@@ -46,35 +45,41 @@ export const createUser = async (params) => {
   }
 };
 
-export const userSignin = async(params) => {
+export const userSignin = async (params) => {
   try {
+    const { username, password } = params;
 
-    const {username, password} = params;
-
-    const user = await userModel.findOne({username}).select("username password id displayName");
-    if(!user) {
-      return {success: false, message: "Could not find user ", errorCode: 400};
+    const user = await User.findOne({ username }).select(
+      "username password id displayName"
+    );
+    if (!user) {
+      return {
+        success: false,
+        message: "Could not find user ",
+        errorCode: 400,
+      };
     }
 
     const match = await bcrypt.compare(password, user.password);
-    if(!match) {
-      return {success: false, message: "Wrong password", errorCode: 400};
+    if (!match) {
+      return { success: false, message: "Wrong password", errorCode: 400 };
     }
 
-    const token = jwt.sign({data: user.id}, process.env.TOKEN_SECRET, {expiresIn : "24h"});
-    return {success: true, message: "user found", token: token, id: user.id};
-
-  } catch(error) {
-    return {success: false, message: "User does not exist", errorCode : 401};
+    const token = jwt.sign({ data: user.id }, process.env.TOKEN_SECRET, {
+      expiresIn: "24h",
+    });
+    return { success: true, message: "user found", token: token, id: user.id };
+  } catch (error) {
+    return { success: false, message: "User does not exist", errorCode: 401 };
   }
-}
+};
 
 export const getInfo = async (userId) => {
   try {
     console.log("user  ID ", userId);
-    const user = await userModel
-      .findById(userId)
-      .select("username displayName id email");
+    const user = await User.findById(userId).select(
+      "username displayName id email"
+    );
     if (!user) {
       return {
         success: false,
@@ -84,6 +89,33 @@ export const getInfo = async (userId) => {
     }
     return { success: true, message: "User found successfully", data: user };
   } catch (error) {
+    return { success: false, errorCode: 500 };
+  }
+};
+
+export const updatePassword = async (userInput, id) => {
+  try {
+    const { password, newPassword } = userInput;
+
+    const user = await User.findById(id).select("id password");
+
+    console.log("user-service: updatePassword USER :", user);
+
+    if (!user) {
+      return { success: false, message: "User unauthorized", errorCode: 403 };
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      return { success: false, message: "Bad request", errorCode: 400 };
+    } else {
+      user.setPassword(newPassword);
+      await user.save();
+      return {success: true, message: "Password updated successfully", data: {}};
+    }
+  } catch (error) {
+    console.log("user-service : updatePassword :: ERROR : ", error);
     return { success: false, errorCode: 500 };
   }
 };

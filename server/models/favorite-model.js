@@ -1,20 +1,19 @@
 import mongoose from "mongoose";
-
-// const mongoose = require("mongoose");
+import modelOptions from "./options.js";
 
 const favoriteSchema = new mongoose.Schema({
     user: {
-        type: ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
     mediaType: {
         type: String,
-        enum: ['tv','movies'],
+        enum: ['tv','movie'],
         required: true
     },
     mediaId: {
-        type: ObjectId,
+        type: String,
         required: true
     },
     mediaTitle: {
@@ -22,11 +21,16 @@ const favoriteSchema = new mongoose.Schema({
         required: true
     },
     mediaRate: {
-        type: String,
+        type: Number,
         required: true
+    },
+    mediaPoster : {
+        type: String,
+        required: true  
     }
-})
+}, modelOptions);
 
-// mongoose exports a model method
+
+
 const favoriteModel = mongoose.model("Favorite", favoriteSchema);
 export default favoriteModel;   

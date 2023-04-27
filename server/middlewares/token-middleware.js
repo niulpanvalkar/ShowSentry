@@ -8,32 +8,38 @@ dotenv.config();
 const decodeToken = async (request) => {
     try {
         const bearerHeader = request.headers["authorization"];
-        console.log("bearerHeader : ", bearerHeader);
         if(bearerHeader) {
             const token = bearerHeader.split(" ")[1];
             return jwt.verify(token, process.env.TOKEN_SECRET);
         }
         return false
     }catch(error){
-        console.log("Failed to decode token : ", error);
+        console.log("Failed to decode token : ", error.message);
         return false;
     }
 }
 
-const auth = async(request, response, next) => {
-    const decodedToken = await decodeToken(request);
-    console.log("decodedToken : ", decodedToken);
-    if(!decodedToken) {
-        responseHelper.setResponse(response, 401, {success: false, message: "User unauthorized"});      
-    }  
-
+const auth = async (request, response, next) => {
+  const decodedToken = await decodeToken(request);
+  console.log("decodedToken : ", decodedToken);
+  if (!decodedToken) {
+    responseHelper.setResponse(response, 401, {
+      success: false,
+      message: "User unauthorized",
+    });
+  } else {
     const user = await userModel.findById(decodedToken.data);
     console.log("USER IN MIDDLEWARE : ", user);
-    if(!user) {
-        responseHelper.setResponse(response, 401, {success: false, message: "User unauthorized"});
+    if (!user) {
+      responseHelper.setResponse(response, 401, {
+        success: false,
+        message: "User unauthorized",
+      });
+    } else {
+      request.user = user;
+      next();
     }
-    request.user = user;
-    next();
-}
+  }
+};
 
 export default {decodeToken, auth};
