@@ -55,7 +55,7 @@ const tmdbEndpoints = {
     }) => tmdbConfig.getUrl(
         `${mediaType}/${mediaId}/images`
     ),
-    personalDetail: (personId) => tmdbConfig.getUrl(
+    personDetail: ({personId}) => tmdbConfig.getUrl(
         `person/${personId}`
     ),
     personMedias: ({

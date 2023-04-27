@@ -5,9 +5,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const decodeToken = async (request) => {
+const decodeToken = async (headers) => {
     try {
-        const bearerHeader = request.headers["authorization"];
+        const bearerHeader = headers["authorization"];
         if(bearerHeader) {
             const token = bearerHeader.split(" ")[1];
             return jwt.verify(token, process.env.TOKEN_SECRET);
@@ -20,7 +20,7 @@ const decodeToken = async (request) => {
 }
 
 const auth = async (request, response, next) => {
-  const decodedToken = await decodeToken(request);
+  const decodedToken = await decodeToken(request.headers);
   console.log("decodedToken : ", decodedToken);
   if (!decodedToken) {
     responseHelper.setResponse(response, 401, {
@@ -29,7 +29,6 @@ const auth = async (request, response, next) => {
     });
   } else {
     const user = await userModel.findById(decodedToken.data);
-    console.log("USER IN MIDDLEWARE : ", user);
     if (!user) {
       responseHelper.setResponse(response, 401, {
         success: false,
