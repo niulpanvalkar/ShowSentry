@@ -23,6 +23,10 @@ const reviewSchema = new mongoose.Schema({
     mediaId: {
         type: String,
         required: true
+    },
+    mediaPoster: {
+        type: String,
+        required: true
     }
 }, modelOptions);
 

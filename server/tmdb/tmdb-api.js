@@ -9,7 +9,12 @@ const tmdbApi = {
             page
         })
     ),
-    mediaSearch: async (mediaType, query, page) => await axiosClient.get(
+    mediaGenres: async({mediaType}) => await axiosClient.get(
+        tmdbEndpoints.mediaGenre({
+            mediaType
+        })
+    ),
+    mediaSearch: async ({mediaType, query, page}) => await axiosClient.get(
         tmdbEndpoints.mediaSearch({
             mediaType,
             query,
