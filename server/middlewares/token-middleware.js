@@ -7,7 +7,7 @@ dotenv.config();
 
 const decodeToken = async (request) => {
     try {
-        const bearerHeader = request.headers["authorization"];
+        const bearerHeader = headers["authorization"];
         if(bearerHeader) {
             const token = bearerHeader.split(" ")[1];
             return jwt.verify(token, process.env.TOKEN_SECRET);
@@ -20,7 +20,7 @@ const decodeToken = async (request) => {
 }
 
 const auth = async (request, response, next) => {
-  const decodedToken = await decodeToken(request);
+  const decodedToken = await decodeToken(request.headers);
   console.log("decodedToken : ", decodedToken);
   if (!decodedToken) {
     responseHelper.setResponse(response, 401, {
